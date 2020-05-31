@@ -21,6 +21,8 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    followers: [this],
+    following: [this],
   },
   { timestamps: true }
 );
