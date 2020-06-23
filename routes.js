@@ -5,22 +5,28 @@ const PostController = require("./controllers/postController");
 const UserController = require("./controllers/userController");
 const LikeController = require("./controllers/likeController");
 const FollowController = require("./controllers/followController");
+const ChatController = require("./controllers/chatController");
 
 const auth = require("./middlewares/auth");
 
 routes.post("/users", UserController.store);
 routes.post("/auth", UserController.signIn);
 
-routes.get("/posts", auth, PostController.index);
-routes.post("/posts", auth, PostController.store);
-routes.delete("/posts/:id", auth, PostController.destroy);
-routes.put("/posts/:id", auth, PostController.update);
+routes.use(auth);
 
-routes.post("/posts/likes/:id", auth, LikeController.store);
+routes.get("/posts", PostController.index);
+routes.post("/posts", PostController.store);
+routes.delete("/posts/:id", PostController.destroy);
+routes.put("/posts/:id", PostController.update);
 
-routes.post("/follow/:id", auth, FollowController.store);
+routes.post("/posts/likes/:id", LikeController.store);
 
-routes.get("/users/:id/followers", auth, FollowController.getFollowers);
-routes.get("/users/:id/following", auth, FollowController.getFollowing);
+routes.post("/follow/:id", FollowController.store);
+
+routes.get("/users/:id/followers", FollowController.getFollowers);
+routes.get("/users/:id/following", FollowController.getFollowing);
+
+routes.post("/users/chats", ChatController.store);
+routes.get("/users/chats", ChatController.index);
 
 module.exports = routes;
